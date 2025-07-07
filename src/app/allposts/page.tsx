@@ -13,10 +13,11 @@ import tech6 from '@/assests/tech-card/tech6.png';
 import tech7 from '@/assests/tech-card/tech7.png';
 import authorPfp from '@/assests/author-pfp.jpg';
 import { useSearchParams } from "next/navigation";
+import { Post, User } from "@/types";
 
 export default function AllPostsPage() {
-  const [posts, setPosts] = useState<any[]>([]);
-  const [authors, setAuthors] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [authors, setAuthors] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
   const search = (searchParams!.get("search") || "").toLowerCase();
@@ -34,15 +35,15 @@ export default function AllPostsPage() {
 
   useEffect(() => {
     async function fetchData() {
-      const fetchedPosts = await getPosts();
+      const fetchedPosts: Post[] = await getPosts();
       const filtered = search
-        ? fetchedPosts.filter((post: any) => post.title.toLowerCase().includes(search))
+        ? fetchedPosts.filter((post: Post) => post.title.toLowerCase().includes(search))
         : fetchedPosts;
       const startIdx = (page - 1) * POSTS_PER_PAGE;
       const postsToShow = filtered.slice(startIdx, startIdx + POSTS_PER_PAGE);
       setPosts(postsToShow);
-      const fetchedAuthors = await Promise.all(
-        postsToShow.map((post: any) => getUser(post.userId.toString()))
+      const fetchedAuthors: User[] = await Promise.all(
+        postsToShow.map((post: Post) => getUser(post.userId.toString()))
       );
       setAuthors(fetchedAuthors);
       setLoading(false);
