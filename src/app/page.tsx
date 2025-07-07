@@ -1,6 +1,3 @@
-import BlogCard from "../components/BlogCard";
-import { getPosts } from "../api/car-api";
-import Link from "next/link";
 import Banner from "@/components/Banner";
 import TechnologyCard from "@/components/TechnologyCard";
 import CategoryCard from '@/components/CategoryCard';
@@ -15,6 +12,7 @@ import cat4 from "../assests/cat-card/cat4.png";
 import TrendingBlogCard from "@/components/TrendingBlogCard";
 import LatestBlogCard from "@/components/LatestBlogCard";
 import TestimonialsSection from '@/components/TestimonialsSection';
+import { getPosts } from "../api/car-api";
 
 export default async function Home() {
   let posts;
@@ -22,7 +20,7 @@ export default async function Home() {
 
   try {
     posts = await getPosts();
-  } catch (err) {
+  } catch {
     error = "Unable to fetch car blogs. Please try again later.";
   }
 

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from 'react';
-import ContactForm from '../../components/ContactForm';
 import Link from "next/link";
 import axios from "axios";
 import { motion } from "framer-motion";
@@ -96,7 +95,7 @@ export default function Contact() {
       toast.success('Form submitted successfully!');
       setFormData({ name: '', email: '', subject: '', message: '' });
       setTouched({ name: false, email: false, subject: false, message: false });
-    } catch (error) {
+    } catch {
       toast.error('There was an error submitting the form.');
     }
   };

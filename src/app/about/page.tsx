@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Car, Sparkles, Cpu, Send } from "lucide-react";
+import { Car, Sparkles, Cpu } from "lucide-react";
 
 const listVariants = {
   hidden: {},
@@ -44,7 +44,7 @@ export default function About() {
           className="text-lg text-gray-700 text-center max-w-2xl"
         >
           <Sparkles className="inline-block w-5 h-5 text-yellow-500 mr-2" />
-          Car Blog is your go-to source for the latest in automotive news, reviews, and tips. We fuel the passion of car lovers with content that's not just informative—but exciting.
+          Car Blog is your go-to source for the latest in automotive news, reviews, and tips. We fuel the passion of car lovers with content that&apos;s not just informative—but exciting.
         </motion.p>
       </div>
 
