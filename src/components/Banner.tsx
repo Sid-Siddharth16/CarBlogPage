@@ -2,7 +2,7 @@ import React from "react";
 import hero from "../assests/hero-img.jpg";
 import Image from "next/image";
 
-export default function () {
+function Banner() {
   return (
     <div className="bg-[#232536] w-full mb-20 p-0 overflow-hidden">
       <div className="relative w-full h-72 sm:h-96 md:h-[40rem] overflow-hidden left-0 flex items-center justify-center">
@@ -53,3 +53,5 @@ export default function () {
     </div>
   );
 }
+
+export default Banner;
