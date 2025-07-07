@@ -1,0 +1,46 @@
+@import "tailwindcss";
+
+
+body {
+  font-family: Arial, sans-serif;
+  /* background-color: #060505; */
+  /* overflow-X: hidden; */
+}
+
+.post-hover-fade {
+  position: relative;
+  overflow: hidden;
+}
+
+.post-hover-fade::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  left: 100%;
+  width: 100%;
+  background: #FF5959;
+  z-index: 0;
+  transition: left 0.4s cubic-bezier(0.4,0,0.2,1);
+  pointer-events: none;
+}
+
+.post-hover-fade:hover::before,
+.post-hover-fade:focus-within::before {
+  left: 0;
+}
+
+.post-hover-fade .fade-content {
+  position: relative;
+  z-index: 1;
+  transition: color 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+.post-hover-fade:hover .fade-content,
+.post-hover-fade:focus-within .fade-content {
+  color: #fff !important;
+}
+
+.post-hover-fade:hover .fade-content * {
+  color: #fff !important;
+  fill: #fff !important;
+}

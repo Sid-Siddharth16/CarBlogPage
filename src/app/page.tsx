@@ -1,103 +1,199 @@
-import Image from "next/image";
+import BlogCard from "../components/BlogCard";
+import { getPosts } from "../api/car-api";
+import Link from "next/link";
+import Banner from "@/components/Banner";
+import TechnologyCard from "@/components/TechnologyCard";
+import CategoryCard from '@/components/CategoryCard';
+import tech1 from "../assests/tech-card/tech1.png";
+import tech2 from "../assests/tech-card/tech2.png";
+import tech3 from "../assests/tech-card/tech3.png";
+import tech4 from "../assests/tech-card/tech4.png";
+import cat1 from "../assests/cat-card/cat1.png";
+import cat2 from "../assests/cat-card/cat2.png";
+import cat3 from "../assests/cat-card/cat3.png";
+import cat4 from "../assests/cat-card/cat4.png";
+import TrendingBlogCard from "@/components/TrendingBlogCard";
+import LatestBlogCard from "@/components/LatestBlogCard";
+import TestimonialsSection from '@/components/TestimonialsSection';
 
-export default function Home() {
+export default async function Home() {
+  let posts;
+  let error = null; 
+
+  try {
+    posts = await getPosts();
+  } catch (err) {
+    error = "Unable to fetch car blogs. Please try again later.";
+  }
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+    <div className="">
+      <Banner />
+      
+      <div className="container mx-auto px-2 sm:px-4 mt-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+          <div>
+            <h2
+              className="text-2xl sm:text-3xl font-bold text-black mb-5"
+              style={{ fontFamily: "Poppins, sans-serif" }}
+            >
+              Latest
+            </h2>
+            {error ? (
+              <p className="text-red-500 text-center text-base sm:text-lg">
+                {error}
+              </p>
+            ) : !posts || posts.length === 0 ? (
+              <p className="text-gray-500 text-center text-base sm:text-lg">
+                No blogs available.
+              </p>
+            ) : (
+              <LatestBlogCard
+                author="John Doe"
+                date="March 12, 2024"
+                title={posts[0].title}
+                excerpt={posts[0].body.substring(0, 120) + "..."}
+                postUrl={`/post/${posts[0].id}`}
+              />
+            )}
+          </div>
+          <div>
+            <div className="flex justify-between items-center mb-12">
+              <h2
+                className="text-2xl sm:text-3xl font-bold text-black"
+                style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}
+              >
+                Trending Blogs
+              </h2>
+              <a
+                href="/allposts"
+                className="text-[#000000] hover:underline font-medium text-base sm:text-lg"
+                style={{ fontFamily: "Poppins,sans-serif" }}
+              >
+                See all
+              </a>
+            </div>
+            <div>
+              {posts && posts.length > 3 ? (
+                posts
+                  .slice(1, 5)
+                  .map((post) => (
+                    <TrendingBlogCard
+                      key={post.id}
+                      author="John Deo"
+                      date="Aug 23, 2023"
+                      title={post.title}
+                      postUrl={`/post/${post.id}`}
+                    />
+                  ))
+              ) : (
+                <p className="text-gray-500 text-center text-base sm:text-lg">
+                  No trending blogs available.
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container mx-auto px-2 sm:px-4 mt-8">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
+            New Technology
+          </h2>
           <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/allposts"
+            className="text-black hover:underline font-bold text-base sm:text-xl"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
+            See All
           </a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-25">
+          <TechnologyCard
+            imageSrc={tech1}
+            authorName="Alice Smith"
+            description="Focuses on local pride and future impact"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          <TechnologyCard
+            imageSrc={tech2}
+            authorName="Bob Lee"
+            description="Highlights local relevance and smart solutions"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          <TechnologyCard
+            imageSrc={tech3}
+            authorName="Carol King"
+            description="Emphasizes user-centric design and practicality"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <TechnologyCard
+            imageSrc={tech4}
+            authorName="David Ray"
+            description="Boldly proclaims the arrival of the new technology"
+          />
+        </div>
+        
+        {/* All Category Section */}
+        <div className="container mx-auto px-2 sm:px-4 mb-16 border-t-4 border-[#2325364D] py-16">
+          <div className="flex items-center gap-4 mb-8">
+            <h2 className="text-2xl sm:text-3xl font-bold" style={{ fontFamily: 'Poppins, sans-serif' }}>All Category</h2>
+            
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+            <CategoryCard
+              image={cat1}
+              title="Car Reviews"
+              description="Lorem ipsum dolor sit amet consectetur. Urna dignissim ac egendrerit in."
+            />
+            <CategoryCard
+              image={cat2}
+              title="Maintenance Tips"
+              description="Lorem ipsum dolor sit amet consectetur. Urna dignissim ac egendrerit in."
+            />
+            <CategoryCard
+              image={cat3}
+              title="Car Modifications"
+              description="Lorem ipsum dolor sit amet consectetur. Urna dignissim ac egendrerit in."
+            />
+            <CategoryCard
+              image={cat4}
+              title="Driving Tips"
+              description="Lorem ipsum dolor sit amet consectetur. Urna dignissim ac egendrerit in."
+            />
+          </div>
+        </div>
+        <TestimonialsSection />
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-gray-800">
+            New Technology
+          </h2>
+          <a
+            href="/allposts"
+            className="text-black hover:underline font-bold text-base sm:text-xl"
+          >
+            See All
+          </a>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-25">
+          <TechnologyCard
+            imageSrc={tech1}
+            authorName="Alice Smith"
+            description="Focuses on local pride and future impact"
+          />
+          <TechnologyCard
+            imageSrc={tech2}
+            authorName="Bob Lee"
+            description="Highlights local relevance and smart solutions"
+          />
+          <TechnologyCard
+            imageSrc={tech3}
+            authorName="Carol King"
+            description="Emphasizes user-centric design and practicality"
+          />
+          <TechnologyCard
+            imageSrc={tech4}
+            authorName="David Ray"
+            description="Boldly proclaims the arrival of the new technology"
+          />
+        </div>
+      </div>
     </div>
   );
 }
