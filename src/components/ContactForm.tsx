@@ -5,7 +5,7 @@ type Props = {
   name: string;
   type?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   error?: string;
 };
 
@@ -24,7 +24,7 @@ export default function ContactForm({ label, name, type = 'text', value, onChang
         <textarea
           name={name}
           value={value}
-          onChange={onChange as any}
+          onChange={onChange}
           className="w-full p-3 rounded-xl bg-gray-100 border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 outline-none transition-all duration-200 shadow-sm min-h-[120px] resize-y"
         />
       ) : (

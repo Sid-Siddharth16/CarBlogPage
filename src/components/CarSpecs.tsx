@@ -76,7 +76,7 @@ export default function CarSpecs({
     >
       {/* <h3 className="text-2xl font-bold text-[#232536] mb-6 text-center tracking-tight">Car Specifications</h3> */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-        {specsData.map((spec, idx) => (
+        {specsData.map((spec) => (
           <motion.div
             key={spec.key}
             className="flex items-center gap-3 sm:gap-4 bg-white/80 rounded-xl p-4 sm:p-5 shadow-md hover:scale-105 transition-transform duration-300"

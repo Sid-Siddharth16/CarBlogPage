@@ -2,19 +2,13 @@
 import { useState, useMemo } from "react";
 import LatestBlogCard from "./LatestBlogCard";
 import TrendingBlogCard from "./TrendingBlogCard";
-
-interface Post {
-  id: number;
-  title: string;
-  body: string;
-  [key: string]: any;
-}
+import { Post } from "../types";
 
 export default function BlogSearchSection({ posts, error }: { posts: Post[]; error: string | null }) {
   const [search, setSearch] = useState("");
   const filteredPosts = useMemo(() => {
     if (!search) return posts;
-    return posts.filter((post) => post.title.toLowerCase().includes(search.toLowerCase()));
+    return posts.filter((post: Post) => post.title.toLowerCase().includes(search.toLowerCase()));
   }, [search, posts]);
 
   return (
