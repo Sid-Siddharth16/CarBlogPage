@@ -13,8 +13,16 @@ import TrendingBlogCard from "@/components/TrendingBlogCard";
 import LatestBlogCard from "@/components/LatestBlogCard";
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { getPosts } from "../api/car-api";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./api/auth/[...nextauth]/route";
+import { redirect } from "next/navigation";
 
 export default async function Home() {
+  // const session = await getServerSession(authOptions);
+  // if(!session){
+  //   redirect("/login");
+  // }
+
   let posts;
   let error = null; 
 

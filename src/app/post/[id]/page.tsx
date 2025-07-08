@@ -150,7 +150,7 @@ export default function BlogDetailPage() {
         />
       </div>
       {/* All Category Heading */}
-      <h2 className="text-xl sm:text-2xl font-bold text-[#232536] mt-10 sm:mt-12 mb-4 sm:mb-6 text-center">All Category</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-[#232536] mt-10 sm:mt-12 mb-4 sm:mb-6 text-center mx-auto shadow-sm  transition-shadow duration-300 ease-in-out hover:scale-105 hover:shadow-lg">All Category</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
         <CategoryCard
           image={cat1}

@@ -2,6 +2,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import '../styles/globals.css';
 import { Metadata } from 'next';
+import SessionProviderWrapper from '@/components/SessionProviderWrapper';
 
 export const metadata: Metadata = {
   title: 'Car Blog',
@@ -18,9 +19,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="flex flex-col min-h-screen bg-gray-100">
-        <Header />
-        <main className="flex-grow container mx-auto px-4">{children}</main>
-        <Footer />
+        <SessionProviderWrapper>
+          <Header />
+          <main className="flex-grow container mx-auto px-4">{children}</main>
+          <Footer />
+        </SessionProviderWrapper>
       </body>
     </html>
   );

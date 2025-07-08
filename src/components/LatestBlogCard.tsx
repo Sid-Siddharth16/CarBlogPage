@@ -17,7 +17,7 @@ export default function LatestBlogCard({ author, date, title, excerpt, postUrl }
       <Image
         src={latest_car}
         alt={title}
-        className="w-full sm:w-220 h-48 sm:h-80 object-cover rounded-lg mb-5" 
+        className="w-full sm:w-220 h-48 sm:h-80 object-contain rounded-lg mb-5" 
       />
       <div className="flex items-center gap-2 text-xs sm:text-sm ">
         <span className="text-[#FF6666]">By {author}</span>
