@@ -50,7 +50,7 @@ export default function LoginPage() {
     setError("");
     try {
       await signIn(provider, { callbackUrl: "/" });
-    } catch (err) {
+    } catch {
       setError(`Failed to sign in with ${provider}. Please try again.`);
     } finally {
       setLoading(false);

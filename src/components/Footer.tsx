@@ -17,7 +17,7 @@ export default function Footer() {
     router.push('/');
     e.currentTarget.reset();
   };
-  const handlelogout = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handlelogout = () => {
     router.push("/login");  
   }
   return (
