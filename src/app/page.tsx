@@ -18,10 +18,11 @@ import TrendingBlogCard from "@/components/TrendingBlogCard";
 import LatestBlogCard from "@/components/LatestBlogCard";
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { getPosts } from "../api/car-api";
+import { Post } from "@/types";
 
 export default function Home() {
   const { user } = useAuth();
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -30,7 +31,7 @@ export default function Home() {
       try {
         const fetchedPosts = await getPosts();
         setPosts(fetchedPosts);
-      } catch (err) {
+      } catch {
         setError("Unable to fetch car blogs. Please try again later.");
       } finally {
         setLoading(false);

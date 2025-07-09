@@ -64,7 +64,7 @@ export default function LoginPage() {
       } else {
         showToast("Invalid email or password", "error");
       }
-    } catch (error) {
+    } catch {
       showToast("An error occurred. Please try again.", "error");
     } finally {
       setLoading(false);
