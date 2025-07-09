@@ -184,7 +184,7 @@ export default function Header() {
               </li>
               <li>
                 <Link
-                  href="/"
+                  href="/login"
                   className="relative px-2 py-1 transition-all duration-300 ease-in-out hover:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                   onClick={() => setMenuOpen(false)}
                 >
