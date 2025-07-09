@@ -12,16 +12,31 @@ import cat1 from "../../../assests/cat-card/cat1.png";
 import cat2 from "../../../assests/cat-card/cat2.png";
 import cat3 from "../../../assests/cat-card/cat3.png";
 import cat4 from "../../../assests/cat-card/cat4.png";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function BlogDetailPage() {
   const params = useParams() || {};
   const router = useRouter();
+  const { user } = useAuth();
   const [post, setPost] = useState<Post | null>(null);
   const [author, setAuthor] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Check authentication on component mount
   useEffect(() => {
+    if (!user) {
+      toast.error("Please login to read blog posts!");
+      router.push("/login");
+      return;
+    }
+  }, [user, router]);
+
+  useEffect(() => {
+    if (!user) return; // Don't fetch data if not authenticated
+
     const fetchPostAndAuthor = async () => {
       try {
         setLoading(true);
@@ -45,7 +60,18 @@ export default function BlogDetailPage() {
     if (params.id) {
       fetchPostAndAuthor();
     }
-  }, [params.id]);
+  }, [params.id, user]);
+
+  // If not authenticated, show loading or redirect
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-gray-600">Redirecting to login...</p>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return (

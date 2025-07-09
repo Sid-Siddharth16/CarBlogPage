@@ -8,7 +8,7 @@ import { getPosts } from "@/api/car-api";
 import { Post } from "@/types";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSession } from "next-auth/react";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,7 +17,7 @@ export default function Header() {
   const [filteredPosts, setFilteredPosts] = useState<Post[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
   const router = useRouter();
-  const { data: session } = useSession();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     async function fetchPosts() {
@@ -48,11 +48,15 @@ export default function Header() {
       router.push(`/allposts?search=${encodeURIComponent(search.trim())}`);
     }
   };
-  
+
+  const handleLogout = () => {
+    logout();
+    toast.success("Logged out successfully!");
+    router.push("/");
+  };
 
   return (
     <header className="sticky top-0 z-50 bg-[#232536] text-white p-4 sm:p-6 shadow-md">
-      <ToastContainer position="top-center" autoClose={2000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-0">
         {/* Mobile header row */}
         <div className="flex w-full items-center justify-between sm:w-auto gap-2 sm:gap-4">
@@ -169,11 +173,11 @@ export default function Header() {
               </li>
               <li>
                 <Link
-                  href={session ? "/allposts" : "#"}
+                  href={user ? "/allposts" : "#"}
                   className="relative px-2 py-1 transition-all duration-300 ease-in-out hover:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
                   onClick={e => {
                     setMenuOpen(false);
-                    if (!session) {
+                    if (!user) {
                       e.preventDefault();
                       toast.error("Login to see all amazing blogs");
                     }
@@ -182,20 +186,31 @@ export default function Header() {
                   Blogs
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/login"
-                  className="relative px-2 py-1 transition-all duration-300 ease-in-out hover:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  Login
-                </Link>
-              </li>
+              {user ? (
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="relative px-2 py-1 transition-all duration-300 ease-in-out hover:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                  >
+                    Logout
+                  </button>
+                </li>
+              ) : (
+                <li>
+                  <Link
+                    href="/login"
+                    className="relative px-2 py-1 transition-all duration-300 ease-in-out hover:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    Login
+                  </Link>
+                </li>
+              )}
               <li>
                 <button
                   className="p-2 sm:p-[5px] bg-white text-[#333] text-sm sm:text-[17px] font-bold rounded-[5px] font-poppins h-[40px] sm:h-[50px] w-[100px] sm:w-[152px] transition-all duration-300 hover:bg-gray-200 hover:scale-105"
                   onClick={e => {
-                    if (!session) {
+                    if (!user) {
                       e.preventDefault();
                       toast.error("Login to see all amazing blogs");
                     } else {

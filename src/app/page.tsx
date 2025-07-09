@@ -1,3 +1,8 @@
+"use client";
+import { useEffect, useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Banner from "@/components/Banner";
 import TechnologyCard from "@/components/TechnologyCard";
 import CategoryCard from '@/components/CategoryCard';
@@ -14,20 +19,32 @@ import LatestBlogCard from "@/components/LatestBlogCard";
 import TestimonialsSection from '@/components/TestimonialsSection';
 import { getPosts } from "../api/car-api";
 
-export default async function Home() {
-  // const session = await getServerSession(authOptions);
-  // if(!session){
-  //   redirect("/login");
-  // }
+export default function Home() {
+  const { user } = useAuth();
+  const [posts, setPosts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  let posts;
-  let error = null; 
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const fetchedPosts = await getPosts();
+        setPosts(fetchedPosts);
+      } catch (err) {
+        setError("Unable to fetch car blogs. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchPosts();
+  }, []);
 
-  try {
-    posts = await getPosts();
-  } catch {
-    error = "Unable to fetch car blogs. Please try again later.";
-  }
+  const handleBlogAccess = (e: React.MouseEvent) => {
+    if (!user) {
+      e.preventDefault();
+      toast.error("Please login to see all amazing blogs!");
+    }
+  };
 
   return (
     <div className="">
@@ -42,7 +59,11 @@ export default async function Home() {
             >
               Latest
             </h2>
-            {error ? (
+            {loading ? (
+              <p className="text-gray-500 text-center text-base sm:text-lg">
+                Loading...
+              </p>
+            ) : error ? (
               <p className="text-red-500 text-center text-base sm:text-lg">
                 {error}
               </p>
@@ -69,15 +90,20 @@ export default async function Home() {
                 Trending Blogs
               </h2>
               <a
-                href="/allposts"
+                href={user ? "/allposts" : "#"}
                 className="text-[#000000] hover:underline font-medium text-base sm:text-lg"
                 style={{ fontFamily: "Poppins,sans-serif" }}
+                onClick={handleBlogAccess}
               >
                 See all
               </a>
             </div>
             <div>
-              {posts && posts.length > 3 ? (
+              {loading ? (
+                <p className="text-gray-500 text-center text-base sm:text-lg">
+                  Loading...
+                </p>
+              ) : posts && posts.length > 3 ? (
                 posts
                   .slice(1, 5)
                   .map((post) => (
@@ -104,8 +130,9 @@ export default async function Home() {
             New Technology
           </h2>
           <a
-            href="/allposts"
+            href={user ? "/allposts" : "#"}
             className="text-black hover:underline font-bold text-base sm:text-xl"
+            onClick={handleBlogAccess}
           >
             See All
           </a>
@@ -168,8 +195,9 @@ export default async function Home() {
             New Technology
           </h2>
           <a
-            href="/allposts"
+            href={user ? "/allposts" : "#"}
             className="text-black hover:underline font-bold text-base sm:text-xl"
+            onClick={handleBlogAccess}
           >
             See All
           </a>

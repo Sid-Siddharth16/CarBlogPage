@@ -12,17 +12,31 @@ import tech5 from '@/assests/tech-card/tech5.png';
 import tech6 from '@/assests/tech-card/tech6.png';
 import tech7 from '@/assests/tech-card/tech7.png';
 import authorPfp from '@/assests/author-pfp.jpg';
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Post, User } from "@/types";
+import { useAuth } from "@/contexts/AuthContext";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AllPostsPage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [authors, setAuthors] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { user } = useAuth();
   const search = (searchParams!.get("search") || "").toLowerCase();
   const POSTS_PER_PAGE = 5;
   const [page, setPage] = useState(1);
+
+  // Check authentication on component mount
+  useEffect(() => {
+    if (!user) {
+      toast.error("Please login to see all blogs!");
+      router.push("/login");
+      return;
+    }
+  }, [user, router]);
 
   // Static categories/tags for demo
   const allTags = ["SUV", "EV", "Luxury", "Sedan", "Hybrid", "Sports", "Family"];
@@ -34,6 +48,8 @@ export default function AllPostsPage() {
   }
 
   useEffect(() => {
+    if (!user) return; // Don't fetch data if not authenticated
+
     async function fetchData() {
       const fetchedPosts: Post[] = await getPosts();
       const filtered = search
@@ -49,7 +65,7 @@ export default function AllPostsPage() {
       setLoading(false);
     }
     fetchData();
-  }, [search, page]);
+  }, [search, page, user]);
 
   const staticImages = [tech1, tech2, tech3, tech4, tech5, tech6, tech7];
 
@@ -59,6 +75,17 @@ export default function AllPostsPage() {
   }
   function getStaticLikes(idx: number) {
     return 100 + idx * 7;
+  }
+
+  // If not authenticated, show loading or redirect
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-lg text-gray-600">Redirecting to login...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
