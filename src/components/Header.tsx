@@ -183,6 +183,17 @@ export default function Header() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/"
+                  className="relative px-2 py-1 transition-all duration-300 ease-in-out hover:text-white after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[2px] after:bg-white after:transition-all after:duration-300 hover:after:w-full"
+                  onClick={e => {
+                    setMenuOpen(false);
+                  }}
+                >
+                  Login
+                </Link>
+              </li>
+              <li>
                 <button
                   className="p-2 sm:p-[5px] bg-white text-[#333] text-sm sm:text-[17px] font-bold rounded-[5px] font-poppins h-[40px] sm:h-[50px] w-[100px] sm:w-[152px] transition-all duration-300 hover:bg-gray-200 hover:scale-105"
                   onClick={e => {
